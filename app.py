@@ -1,24 +1,17 @@
-from flask import Flask, redirect, url_for, request
+from flask import Flask, redirect, url_for, request, render_template
 from markupsafe import escape
 
 app = Flask(__name__)
 
 @app.route('/')
 def main():
-    return 'Hello'
+    return render_template('student.html')
 
-@app.route('/success/<name>')
-def success(name):
-    return f'{escape(name)} successfully logined'
-
-@app.route('/login',methods = ['POST', 'GET'])
-def login():
+@app.route('/result', methods=['POST', 'GET'])
+def result():
     if request.method == 'POST':
-        user = request.form['nm']
-        return redirect(url_for('success', name = user))
-    else:
-      user = request.args.get('nm')
-      return redirect(url_for('success',name = user))
+        result = request.form
+        return render_template('result.html', result=result)
         
 if __name__ == "__main__":
     app.run(debug=True)
